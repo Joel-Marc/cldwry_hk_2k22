@@ -86,6 +86,10 @@
 </head>
 
 <body>
+    {% if usr %}
+    <h1>WELCOME ((usr))</h1>
+    {% endif %}
+    <br>
     <h2> UPLOADFILES : </h2>
     {% if usr %}
     <form action="/{{usr}}/uploadfiles/" enctype="multipart/form-data" method="post">
