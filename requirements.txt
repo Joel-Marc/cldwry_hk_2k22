@@ -1,7 +1,5 @@
 fastapi
 uvicorn
-os
 shutil
 starlette
-datetime 
 typing
