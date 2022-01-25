@@ -87,19 +87,19 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
 
 
 @app.get("/logout")
-async def logout(credentials: HTTPBasicCredentials = Depends(security)):
+async def logout(credentials: HTTPBasicCredentials = Depends(security), request: Request = Optional):
     try:
-        temp = os.listdir(upload_folder + username + "/")
+        temp = os.listdir(upload_folder + credentials.username + "/")
     except:
-        os.mkdir(upload_folder + username + "/")
-        temp = os.listdir(upload_folder + username + "/")
+        os.mkdir(upload_folder + credentials.username + "/")
+        temp = os.listdir(upload_folder + credentials.username + "/")
 
     files = {}
     for i, a in enumerate(temp):
         files["File "+str(i)] = a
     return TEMPLATES.TemplateResponse("index.html",
-                                      {"request": request, "recipes": files, "usr": username,
-                                       "av": [i for i in fake_db.keys() if i != username]},)
+                                      {"request": request, "recipes": files, "usr": credentials.username,
+                                       "av": [i for i in fake_db.keys() if i != credentials.username]},)
 
 
 @app.get("/{usr}/look/")
