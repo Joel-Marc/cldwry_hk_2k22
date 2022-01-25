@@ -88,11 +88,18 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
 
 @app.get("/logout")
 async def logout(credentials: HTTPBasicCredentials = Depends(security)):
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Login again",
-        headers={"WWW-Authenticate": "Basic"},
-    )
+    try:
+        temp = os.listdir(upload_folder + username + "/")
+    except:
+        os.mkdir(upload_folder + username + "/")
+        temp = os.listdir(upload_folder + username + "/")
+
+    files = {}
+    for i, a in enumerate(temp):
+        files["File "+str(i)] = a
+    return TEMPLATES.TemplateResponse("index.html",
+                                      {"request": request, "recipes": files, "usr": username,
+                                       "av": [i for i in fake_db.keys() if i != username]},)
 
 
 @app.get("/{usr}/look/")
