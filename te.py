@@ -102,6 +102,7 @@ async def logout(credentials: HTTPBasicCredentials = Depends(security), request:
                                        "av": [i for i in fake_db.keys() if i != credentials.username]},)
 
 
+@app.get('/{usr}')
 @app.get("/{usr}/look/")
 async def lookup_file(usr: str, request: Request) -> dict:
     try:
@@ -183,9 +184,21 @@ async def shrto(usr, ur, tem):
     except:
         os.mkdir(upload_folder + ur + "/")
         shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
+    try:
+        temp = os.listdir(upload_folder + usr + "/")
+    except:
+        os.mkdir(upload_folder + usr + "/")
+        temp = os.listdir(upload_folder + usr + "/")
+    files = {}
+    for i, a in enumerate(temp):
+        files["File "+str(i)] = a
+    return TEMPLATES.TemplateResponse(
+        "index.html",
+        {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
+    )
 
 
-@app.get("/{usr}/downfiles/{fname}")
+@ app.get("/{usr}/downfiles/{fname}")
 async def down_file(usr, fname):
     print(usr)
     return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
