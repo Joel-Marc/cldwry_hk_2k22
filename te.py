@@ -177,7 +177,7 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
 
 
 @app.get('/{usr}/shrto/{ur}/{tem}')
-async def shrto(usr, ur, tem):
+async def shrto(usr, ur, tem, request: Request = Optional):
     try:
         shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
         print(usr, ur, tem)
