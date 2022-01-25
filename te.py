@@ -155,4 +155,4 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
 @app.get("/{usr}/downfiles/{fname}")
 async def down_file(usr, fname):
     print(usr)
-    return FileResponse(upload_folder+fname, media_type='application/octet-stream', filename=fname)
+    return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
