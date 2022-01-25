@@ -63,7 +63,11 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
         shutil.copyfileobj(file_object, up_fol)
         up_fol.close()
 
-    temp = os.listdir(upload_folder + usr + "/")
+    try:
+        temp = os.listdir(upload_folder + usr + "/")
+    except:
+        os.mkdir(upload_folder + usr + "/")
+        temp = os.listdir(upload_folder + usr + "/")
 
     files = {}
     for i, a in enumerate(temp):
@@ -77,7 +81,11 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
 
 @app.get("/{usr}/look/")
 async def lookup_file(usr: str, request: Request) -> dict:
-    temp = os.listdir(upload_folder + usr + "/")
+    try:
+        temp = os.listdir(upload_folder + usr + "/")
+    except:
+        os.mkdir(upload_folder + usr + "/")
+        temp = os.listdir(upload_folder + usr + "/")
     print(usr)
     files = {}
     for i, a in enumerate(temp):
@@ -94,7 +102,11 @@ async def del_file(usr, fname, request: Request = Optional):
     print(usr)
     try:
         os.remove(upload_folder + fname)
-        temp = os.listdir(upload_folder + usr + "/")
+        try:
+            temp = os.listdir(upload_folder + usr + "/")
+        except:
+            os.mkdir(upload_folder + usr + "/")
+            temp = os.listdir(upload_folder + usr + "/")
         files = {}
         for i, a in enumerate(temp):
             files["File "+str(i)] = a
@@ -103,7 +115,11 @@ async def del_file(usr, fname, request: Request = Optional):
             {"request": request, "recipes": files, "usr": usr},
         )
     except:
-        temp = os.listdir(upload_folder + usr + "/")
+        try:
+            temp = os.listdir(upload_folder + usr + "/")
+        except:
+            os.mkdir(upload_folder + usr + "/")
+            temp = os.listdir(upload_folder + usr + "/")
         files = {}
         for i, a in enumerate(temp):
             files["File "+str(i)] = a
@@ -122,7 +138,11 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
     else:
         os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to)
 
-    temp = os.listdir(upload_folder + usr + "/")
+    try:
+        temp = os.listdir(upload_folder + usr + "/")
+    except:
+        os.mkdir(upload_folder + usr + "/")
+        temp = os.listdir(upload_folder + usr + "/")
     files = {}
     for i, a in enumerate(temp):
         files["File "+str(i)] = a
