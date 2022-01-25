@@ -87,7 +87,7 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
 
 
 @app.get("/logout")
-async def logout():
+async def logout(credentials: HTTPBasicCredentials = Depends(security)):
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Login again",
