@@ -125,7 +125,7 @@ async def del_file(usr, fname, request: Request = Optional):
 
     print(usr)
     try:
-        os.remove(upload_folder + fname)
+        os.remove(upload_folder + usr + "/" + fname)
         try:
             temp = os.listdir(upload_folder + usr + "/")
         except:
