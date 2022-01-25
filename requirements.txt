@@ -1,0 +1,7 @@
+fastapi
+secrets
+os
+shutil
+starlette
+datetime 
+typing
