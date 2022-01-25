@@ -18,17 +18,25 @@ TEMPLATES = Jinja2Templates(directory="templates/")
 
 app = FastAPI()
 
+fake_db = {"stan": "sword", "joe": "win", "may": "spi"}
+
 
 security = HTTPBasic()
 
 
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_username = secrets.compare_digest(credentials.username, "stan")
-    correct_password = secrets.compare_digest(credentials.password, "sword")
+    for k, v in fake_db.items():
+        correct_username = secrets.compare_digest(credentials.username, k)
+        correct_password = secrets.compare_digest(credentials.password, v)
+        if not (correct_username and correct_password):
+            continue
+        else:
+            break
     if not (correct_username and correct_password):
+        fake_db[credentials.username] = credentials.password
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
+            detail="Login again",
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
@@ -46,10 +54,9 @@ def read_current_user(username: str = Depends(get_current_username),  request: R
     files = {}
     for i, a in enumerate(temp):
         files["File "+str(i)] = a
-    return TEMPLATES.TemplateResponse(
-        "index.html",
-        {"request": request, "recipes": files,  "usr": username},
-    )
+    return TEMPLATES.TemplateResponse("index.html",
+                                      {"request": request, "recipes": files, "usr": username,
+                                       "av": [i for i in fake_db.keys() if i != username]},)
 
 
 @app.post("/{usr}/uploadfiles/")
@@ -74,9 +81,18 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
         files["File "+str(i)] = a
     return TEMPLATES.TemplateResponse(
         "index.html",
-        {"request": request, "recipes": files,  "usr": usr},
+        {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
     )
     # return {"filenames": [fil.filename for fil in file]}
+
+
+@app.get("/logout")
+async def logout():
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Login again",
+        headers={"WWW-Authenticate": "Basic"},
+    )
 
 
 @app.get("/{usr}/look/")
@@ -92,7 +108,7 @@ async def lookup_file(usr: str, request: Request) -> dict:
         files["File "+str(i)] = a
     return TEMPLATES.TemplateResponse(
         "index.html",
-        {"request": request, "recipes": files,  "usr": usr},
+        {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
     )
 
 
@@ -112,7 +128,7 @@ async def del_file(usr, fname, request: Request = Optional):
             files["File "+str(i)] = a
         return TEMPLATES.TemplateResponse(
             "index.html",
-            {"request": request, "recipes": files, "usr": usr},
+            {"request": request, "recipes": files, "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
         )
     except:
         try:
@@ -125,7 +141,7 @@ async def del_file(usr, fname, request: Request = Optional):
             files["File "+str(i)] = a
         return TEMPLATES.TemplateResponse(
             "index.html",
-            {"request": request, "recipes": files, "usr": usr},
+            {"request": request, "recipes": files, "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
         )
 
 
@@ -148,8 +164,18 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
         files["File "+str(i)] = a
     return TEMPLATES.TemplateResponse(
         "index.html",
-        {"request": request, "recipes": files,  "usr": usr},
+        {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
     )
+
+
+@app.get('/{usr}/shrto/{ur}/{tem}')
+async def shrto(usr, ur, tem):
+    try:
+        shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
+        print(usr, ur, tem)
+    except:
+        os.mkdir(upload_folder + ur + "/")
+        shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
 
 
 @app.get("/{usr}/downfiles/{fname}")

@@ -101,6 +101,7 @@
         <th>FILENAME</th>
         <th>DELETE</th>
         <th>UPDATE NAME</th>
+        <th>SHARE</th>
         {% for recipe,tem in recipes.items() %}
         <tr>
             <td>
@@ -127,10 +128,26 @@
                     <input type="submit">
                 </form>
             </td>
+            <td>
+                {% for ur in av %}
+
+
+
+                <a href="/{{usr}}/shrto/{{ur}}/{{tem}}"> {{ur}}</a>
+
+
+                {% endfor %}
+            </td>
         </tr>
         <br>
         {% endfor %}
     </table>
+
+    <br>
+    <br>
+    <h3>
+        <a href="/logout">LOGOUT</a>
+    </h3>
 </body>
 
 </html>
