@@ -194,7 +194,7 @@ async def del_file_api(usr, fname, request: Request = Optional):
 
         return {"DELETED_FILE": fname}
     except:
-        return {"DELETED_FILE": "TRY AGAIN"}
+        return {"NOT_DELETED_FILE": "TRY AGAIN"}
 
 
 @app.post("/{usr}/updfiles/{fro}/")

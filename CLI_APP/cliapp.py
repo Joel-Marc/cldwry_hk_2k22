@@ -1,8 +1,10 @@
-import pycurl
-import os
+from typing import Optional
+from urllib.parse import urlencode
 from io import BytesIO
 import ast
 import sys
+import pycurl
+
 # UPLOAD
 
 BASE_URL = 'https://drive-cldwry-2k22.herokuapp.com/api/'
@@ -19,9 +21,9 @@ def uplo_file(usr, files):
 # DOWN
 
 
-def down_file(usr, files):
+def down_file(usr, files, to: str = ""):
     for file in files:
-        with open(file, 'wb') as f:
+        with open(to+file, 'wb') as f:
             c = pycurl.Curl()
             c.setopt(c.URL, BASE_URL + usr + '/downfiles/' + file)
             c.setopt(c.WRITEDATA, f)
@@ -47,18 +49,57 @@ def look_file(usr):
 
 
 def del_file(usr, files):
-    pass
+    for file in files:
+        b_obj = BytesIO()
+        crl = pycurl.Curl()
+
+        crl.setopt(crl.URL, BASE_URL + usr + '/delefiles/'+file)
+        crl.setopt(crl.WRITEDATA, b_obj)
+        crl.perform()
+        crl.close()
+        get_body = b_obj.getvalue()
+        fin = ast.literal_eval(get_body.decode('utf8'))
+        # print('YOUR FILES:\n')
+        for k, v in fin.items():
+            print(k, " : ", v)
+
+    print("\n")
 
 
 def upd_file(usr, files):
-    pass
+    crl = pycurl.Curl()
+
+    crl.setopt(crl.URL, BASE_URL + usr + '/updfiles/' + files[0])
+    data = {'to': files[1]}
+    print(data)
+    pf = urlencode(data)
+    crl.setopt(crl.FOLLOWLOCATION, True)
+
+    crl.setopt(crl.POSTFIELDS, pf)
+    crl.perform()
+    crl.close()
 
 
 def shr_file(to, usr, files):
-    pass
+    for u in to:
+        for file in files:
+            b_obj = BytesIO()
+            crl = pycurl.Curl()
+
+            crl.setopt(crl.URL, BASE_URL + usr + '/shrto/'+u+"/"+file)
+            crl.setopt(crl.WRITEDATA, b_obj)
+            crl.perform()
+            crl.close()
+            get_body = b_obj.getvalue()
+            fin = ast.literal_eval(get_body.decode('utf8'))
+            # print('YOUR FILES:\n')
+            for k, v in fin.items():
+                print(k, " : ", v)
+
+    print("\n")
 
 
-def curr_usr():
+def curr_usr(usr):
     b_obj = BytesIO()
     crl = pycurl.Curl()
 
@@ -67,12 +108,14 @@ def curr_usr():
     crl.perform()
     crl.close()
     get_body = b_obj.getvalue()
-    print(get_body.decode('utf8'))
     fin = ast.literal_eval(get_body.decode('utf8'))
     for k, v in fin.items():
-        print(k, " : ", v)
+        print(k, " : ")
+        for it in v:
+            print(it)
 
     print("\n")
+    return [i for i in fin["CURRENT USERS"] if i != usr]
 
 
 def login(usrnm, passw):
@@ -86,15 +129,32 @@ def login(usrnm, passw):
         look_file(usrnm)
         ch = input("ENTER YOUR CHOICE (1-6) : ")
         if ch == '1':
-            pass
+            fil = input("ENTER FILE NAMES TO UPLOAD WITH SPACE to SEPERATE : ")
+            fil = fil.split(" ")
+            uplo_file(usrnm, fil)
         elif ch == '2':
-            pass
+            fil = input("ENTER FILE NAMES TO DOWNLOAD WITH SPACE to SEPERATE : ")
+            fil = fil.split(" ")
+            to_loc = input("ENTER TO LOCATION either './' RELATIVE or ACTUAL '/home/...' OR just press enter : ")
+            down_file(usrnm, fil, to_loc)
         elif ch == '3':
-            pass
+            fil = input("ENTER FROM FILE NAME AND TO FILE NAME WITH SPACE to SEPERATE : ")
+            fil = fil.split(" ")
+            upd_file(usrnm, fil)
         elif ch == '4':
-            pass
+            fil = input("ENTER FILE NAME/s TO DELETE WITH SPACE to SEPERATE : ")
+            fil = fil.split(" ")
+            del_file(usrnm, fil)
         elif ch == '5':
-            curr_usr()
+            chk = curr_usr(usrnm)
+            fil = input("ENTER FILE NAME/s TO SEND WITH SPACE to SEPERATE : ")
+            fil = fil.split(" ")
+            to_usr = input("ENTER TO USER NAME/s to send to WITH SPACE TO SEPERATE : ")
+            for to_u in to_usr.split(" "):
+                if to_u in chk:
+                    shr_file([to_u], usrnm, fil)
+                else:
+                    print("ENTER THE RIGHT TO USERNAME : ", to_u)
         elif ch == '6':
             fl = True
             break
@@ -120,7 +180,7 @@ if __name__ == '__main__':
             passw = sys.argv[2]
             opre = sys.argv[3].split("-")
             files = sys.argv[4:]
-            print(usrnm, passw, opre, files)
+            # print(usrnm, passw, opre, files)
             if "l" in opre:
                 look_file(usrnm)
             elif 'u' in opre:
@@ -132,7 +192,13 @@ if __name__ == '__main__':
             elif 'del' in opre:
                 del_file(usrnm, files)
             elif 's' in opre:
-                curr_usr()
+                chk = curr_usr(usrnm)
+                to_usr = input("ENTER TO USER NAME/s with SPACE TO SEPERATE : ")
+                for to_u in to_usr.split(" "):
+                    if to_u in chk:
+                        shr_file([to_u], usrnm, files)
+                    else:
+                        print("ENTER THE RIGHT TO USERNAME")
             else:
                 print("CHOOSE CORRECT OPERATION")
 
