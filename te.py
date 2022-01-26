@@ -280,4 +280,4 @@ async def down_file_api(usr, fname):
 
 @app.get("/api/cur_usr")
 async def send_usrs():
-    return {"CURRENT USERS": fake_db.keys()}
+    return {"CURRENT USERS": [i for i in fake_db.keys()]}

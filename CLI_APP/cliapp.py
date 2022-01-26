@@ -62,11 +62,12 @@ def curr_usr():
     b_obj = BytesIO()
     crl = pycurl.Curl()
 
-    crl.setopt(crl.URL, BASE_URL + '/cur_usr/')
+    crl.setopt(crl.URL, BASE_URL + 'cur_usr')
     crl.setopt(crl.WRITEDATA, b_obj)
     crl.perform()
     crl.close()
     get_body = b_obj.getvalue()
+    print(get_body.decode('utf8'))
     fin = ast.literal_eval(get_body.decode('utf8'))
     for k, v in fin.items():
         print(k, " : ", v)
