@@ -86,6 +86,19 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
     # return {"filenames": [fil.filename for fil in file]}
 
 
+@app.post("/api/{usr}/uploadfiles/")
+async def create_file_api(usr, request: Request = Optional, file: List[UploadFile] = File(...)):
+    print(usr)
+    global upload_folder
+    for f in file:
+        file_object = f.file
+        # create empty file to copy the file_object to
+        up_fol = open(os.path.join(upload_folder + usr + "/", f.filename), 'wb+')
+        shutil.copyfileobj(file_object, up_fol)
+        up_fol.close()
+    return {"Uploaded_Filenames": [fil.filename for fil in file]}
+
+
 @app.get("/logout")
 async def logout(credentials: HTTPBasicCredentials = Depends(security), request: Request = Optional):
     try:
@@ -118,6 +131,20 @@ async def lookup_file(usr: str, request: Request) -> dict:
         "index.html",
         {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
     )
+
+
+@app.get("/api/{usr}/look/")
+async def lookup_file_api(usr: str, request: Request) -> dict:
+    try:
+        temp = os.listdir(upload_folder + usr + "/")
+    except:
+        os.mkdir(upload_folder + usr + "/")
+        temp = os.listdir(upload_folder + usr + "/")
+    print(usr)
+    files = {}
+    for i, a in enumerate(temp):
+        files["File "+str(i)] = a
+    return files
 
 
 @app.get("/{usr}/delefiles/{fname}")
@@ -153,6 +180,23 @@ async def del_file(usr, fname, request: Request = Optional):
         )
 
 
+@app.get("/api/{usr}/delefiles/{fname}")
+async def del_file_api(usr, fname, request: Request = Optional):
+
+    print(usr)
+    try:
+        os.remove(upload_folder + usr + "/" + fname)
+        try:
+            temp = os.listdir(upload_folder + usr + "/")
+        except:
+            os.mkdir(upload_folder + usr + "/")
+            temp = os.listdir(upload_folder + usr + "/")
+
+        return {"DELETED_FILE": fname}
+    except:
+        return {"DELETED_FILE": "TRY AGAIN"}
+
+
 @app.post("/{usr}/updfiles/{fro}/")
 async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Optional):
     print(usr)
@@ -174,6 +218,18 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
         "index.html",
         {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
     )
+
+
+@app.post("/api/{usr}/updfiles/{fro}/")
+async def updfiles_api(usr, fro: str, to: str = Form(...), request: Request = Optional):
+    print(usr)
+    if not "." in to:
+        os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[1])
+
+    else:
+        os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to)
+
+    return {"Updated_Filenames": {"From": fro, "To": to}}
 
 
 @app.get('/{usr}/shrto/{ur}/{tem}')
@@ -198,7 +254,25 @@ async def shrto(usr, ur, tem, request: Request = Optional):
     )
 
 
+@app.get('/api/{usr}/shrto/{ur}/{tem}')
+async def shrto_api(usr, ur, tem, request: Request = Optional):
+    try:
+        shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
+        print(usr, ur, tem)
+    except:
+        os.mkdir(upload_folder + ur + "/")
+        shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
+
+    return {"FILE SHARED": tem, "TRANSFER": {"From": usr, "To": ur}}
+
+
 @ app.get("/{usr}/downfiles/{fname}")
 async def down_file(usr, fname):
+    print(usr)
+    return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
+
+
+@ app.get("/api/{usr}/downfiles/{fname}")
+async def down_file_api(usr, fname):
     print(usr)
     return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
