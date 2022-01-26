@@ -1,6 +1,8 @@
 import pycurl
 import os
 from io import BytesIO
+import ast
+import sys
 # UPLOAD
 
 BASE_URL = 'https://drive-cldwry-2k22.herokuapp.com/api/'
@@ -30,25 +32,21 @@ def down_file(usr, files):
 def look_file(usr):
     b_obj = BytesIO()
     crl = pycurl.Curl()
-    # Set URL value
+
     crl.setopt(crl.URL, BASE_URL + usr + '/look/')
-    # Write bytes that are utf-8 encoded
     crl.setopt(crl.WRITEDATA, b_obj)
-
-    # Perform a file transfer
     crl.perform()
-
-    # End curl session
     crl.close()
-
-    # Get the content stored in the BytesIO object (in byte characters)
     get_body = b_obj.getvalue()
+    fin = ast.literal_eval(get_body.decode('utf8'))
+    print('YOUR FILES:\n')
+    for k, v in fin.items():
+        print(k, " : ", v)
 
-    # Decode the bytes stored in get_body to HTML and print the result
-    print('Output of GET request:\n%s' % get_body.decode('utf8'))
+    print("\n")
 
 
-def dele_file(usr, files):
+def del_file(usr, files):
     pass
 
 
@@ -58,6 +56,22 @@ def upd_file(usr, files):
 
 def shr_file(to, usr, files):
     pass
+
+
+def curr_usr():
+    b_obj = BytesIO()
+    crl = pycurl.Curl()
+
+    crl.setopt(crl.URL, BASE_URL + '/cur_usr/')
+    crl.setopt(crl.WRITEDATA, b_obj)
+    crl.perform()
+    crl.close()
+    get_body = b_obj.getvalue()
+    fin = ast.literal_eval(get_body.decode('utf8'))
+    for k, v in fin.items():
+        print(k, " : ", v)
+
+    print("\n")
 
 
 def login(usrnm, passw):
@@ -79,7 +93,7 @@ def login(usrnm, passw):
         elif ch == '4':
             pass
         elif ch == '5':
-            pass
+            curr_usr()
         elif ch == '6':
             fl = True
             break
@@ -90,11 +104,36 @@ def login(usrnm, passw):
 
 
 if __name__ == '__main__':
-    fl = False
-    while True:
-        if fl:
-            break
-        print("YOUR DRIVE")
-        usrnm = input("ENTER YOUR USERNAME : ")
-        passw = input("ENTER YOUR PASSWORD : ")
-        fl = login(usrnm, passw)
+    if not len(sys.argv) > 1:
+        fl = False
+        while True:
+            if fl:
+                break
+            print("YOUR DRIVE")
+            usrnm = input("ENTER YOUR USERNAME : ")
+            passw = input("ENTER YOUR PASSWORD : ")
+            fl = login(usrnm, passw)
+    else:
+        if len(sys.argv) > 2:
+            usrnm = sys.argv[1]
+            passw = sys.argv[2]
+            opre = sys.argv[3].split("-")
+            files = sys.argv[4:]
+            print(usrnm, passw, opre, files)
+            if "l" in opre:
+                look_file(usrnm)
+            elif 'u' in opre:
+                uplo_file(usrnm, files)
+            elif 'd' in opre:
+                down_file(usrnm, files)
+            elif 'upd' in opre:
+                upd_file(usrnm, files)
+            elif 'del' in opre:
+                del_file(usrnm, files)
+            elif 's' in opre:
+                curr_usr()
+            else:
+                print("CHOOSE CORRECT OPERATION")
+
+        else:
+            print("INPUT YOUR USERNAME AND PASS PROPERLY!!!")

@@ -276,3 +276,8 @@ async def down_file(usr, fname):
 async def down_file_api(usr, fname):
     print(usr)
     return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
+
+
+@app.get("/api/cur_usr")
+async def send_usrs():
+    return {"CURRENT USERS": fake_db.keys()}
