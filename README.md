@@ -19,8 +19,7 @@ All operations are straight Forward
 
 ## Drawbacks and Limitations WEB-APP
 
-- I have not been able to implement checkpoint A (Authentication and session management) (YET!!) to implement session management ive divided user sessions/repos as folders under the folder ./fil.
-- To Go B/W Users ive put anchor tags 
+- I have not been able to implement checkpoint A (Authentication and session management) (YET!!) to implement session management ive divided user sessions/repos as folders under the folder ./fil. So, To Go between Users ive put anchor tags 
 
 ## To Do
 
