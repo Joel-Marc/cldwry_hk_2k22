@@ -80,6 +80,20 @@ def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJ
     return response
 
 
+@app.post('/api/login')
+def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
+    if username not in fake_db.keys() or password not in fake_db.values():
+        response = RedirectResponse(url="/")
+        return response
+        raise HTTPException(status_code=401, detail="Bad username or password")
+
+    # Create the tokens and passing to set_access_cookies or set_refresh_cookies
+    access_token = Authorize.create_access_token(subject=username)
+    refresh_token = Authorize.create_refresh_token(subject=username)
+
+    return access_token
+
+
 @app.post('/refresh')
 def refresh(Authorize: AuthJWT = Depends()):
     Authorize.jwt_refresh_token_required()
@@ -242,7 +256,7 @@ async def del_file_api(usr, fname, request: Request = Optional):
 async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Optional, Authorize: AuthJWT = Depends()):
     print(usr)
     if not "." in to:
-        os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[1])
+        os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[-1])
 
     else:
         os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to)
@@ -265,7 +279,7 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
 async def updfiles_api(usr, fro: str, to: str = Form(...), request: Request = Optional):
     print(usr)
     if not "." in to:
-        os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[1])
+        os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[-1])
 
     else:
         os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to)
