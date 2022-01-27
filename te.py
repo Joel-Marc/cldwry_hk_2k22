@@ -100,19 +100,10 @@ async def create_file_api(usr, request: Request = Optional, file: List[UploadFil
 
 
 @app.get("/logout")
-async def logout(credentials: HTTPBasicCredentials = Depends(security), request: Request = Optional):
-    try:
-        temp = os.listdir(upload_folder + credentials.username + "/")
-    except:
-        os.mkdir(upload_folder + credentials.username + "/")
-        temp = os.listdir(upload_folder + credentials.username + "/")
-
-    files = {}
-    for i, a in enumerate(temp):
-        files["File "+str(i)] = a
-    return TEMPLATES.TemplateResponse("index.html",
-                                      {"request": request, "recipes": files, "usr": credentials.username,
-                                       "av": [i for i in fake_db.keys() if i != credentials.username]},)
+async def logout(username: str = Depends(get_current_username), request: Request = Optional):
+    response = RedirectResponse(url="/")
+    response.delete_cookie("Authorization", domain="http://127.0.0.1:8000")
+    return response
 
 
 @app.get('/{usr}')
@@ -267,7 +258,7 @@ async def shrto_api(usr, ur, tem, request: Request = Optional):
 
 
 @ app.get("/{usr}/downfiles/{fname}")
-async def down_file(usr, fname, username: str = Depends(get_current_username)):
+async def down_file(usr, fname,  request: Request = Optional, username: str = Depends(get_current_username)):
     try:
         temp = os.path.abspath(upload_folder + usr + "/" + fname)
     except:
