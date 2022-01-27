@@ -278,6 +278,12 @@ async def down_file_api(usr, fname):
     return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
 
 
+@app.get("/{usr}/prevget/{fname}")
+async def prev_file(usr, fname):
+
+    return {"current directory": os.getcwd()}
+
+
 @app.get("/api/cur_usr")
 async def send_usrs():
     return {"CURRENT USERS": [i for i in fake_db.keys()]}
