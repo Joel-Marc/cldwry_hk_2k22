@@ -30,6 +30,8 @@ def down_file(usr, files, to: str = ""):
             c.perform()
             c.close()
 
+    print("\n")
+
 
 def look_file(usr):
     b_obj = BytesIO()
@@ -78,6 +80,8 @@ def upd_file(usr, files):
     crl.setopt(crl.POSTFIELDS, pf)
     crl.perform()
     crl.close()
+
+    print("\n")
 
 
 def shr_file(to, usr, files):
