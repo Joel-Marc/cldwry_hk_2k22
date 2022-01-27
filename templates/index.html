@@ -106,16 +106,16 @@
         <th>DELETE</th>
         <th>UPDATE NAME</th>
         <th>SHARE</th>
-        {% for recipe,tem in recipes.items() %}
+        {% for fno,tem in recipes.items() %}
         <tr>
             <td>
                 <a href="/{{usr}}/downfiles/{{tem}}">
-                    {{recipe}}
-                    <embed src="/{{usr}}/prevget/{{tem}}" width="80px" height="210px" />
+                    {{fno}}
                 </a>
             </td>
             <td>
                 <a href="/{{usr}}/downfiles/{{tem}}">
+                    <embed src="/{{usr}}/prevget/{{tem}}" width="102px" height="201px" />
                     {{tem}}
                 </a>
             </td>
