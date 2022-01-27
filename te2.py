@@ -14,6 +14,9 @@ import pymongo
 import hashlib
 from PIL import Image
 from pydub import AudioSegment
+import sys
+sys.path.append('./ffmpeg')
+
 
 client = pymongo.MongoClient(
     "mongodb+srv://joe:marc@cluster0.ooljk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
