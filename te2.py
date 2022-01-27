@@ -57,6 +57,7 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 
 
 @app.get('/')
+@app.post('/')
 def firs(request: Request):
     return TEMPLATES.TemplateResponse(
         "login.html",
