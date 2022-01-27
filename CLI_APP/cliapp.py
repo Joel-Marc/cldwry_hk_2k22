@@ -9,6 +9,8 @@ import pycurl
 
 BASE_URL = 'https://drive-cldwry-2k22.herokuapp.com/api/'
 
+TOKEN = ""
+
 
 def uplo_file(usr, files):
     crl = pycurl.Curl()
@@ -122,8 +124,32 @@ def curr_usr(usr):
     return [i for i in fin["CURRENT USERS"] if i != usr]
 
 
+def logi(usrnm, passw):
+    b_obj = BytesIO()
+    crl = pycurl.Curl()
+
+    crl.setopt(crl.URL, BASE_URL + "login")
+    data = {'username': usrnm, 'password': passw}
+    print(data)
+    pf = urlencode(data)
+    crl.setopt(crl.FOLLOWLOCATION, True)
+
+    crl.setopt(crl.POSTFIELDS, pf)
+    crl.setopt(crl.WRITEDATA, b_obj)
+    crl.perform()
+    crl.close()
+    TOKEN = b_obj.getvalue().decode('utf8')
+    if TOKEN != "nope":
+        print(TOKEN)
+        print("\n")
+        return False
+    else:
+        return True
+
+
 def login(usrnm, passw):
     print(usrnm, passw)
+
     fl = False
     while(True):
         if fl:
@@ -171,13 +197,16 @@ def login(usrnm, passw):
 if __name__ == '__main__':
     if not len(sys.argv) > 1:
         fl = False
+
         while True:
             if fl:
                 break
             print("YOUR DRIVE")
             usrnm = input("ENTER YOUR USERNAME : ")
             passw = input("ENTER YOUR PASSWORD : ")
-            fl = login(usrnm, passw)
+            fl = logi(usrnm, passw)
+            if fl == False:
+                fl = login(usrnm, passw)
     else:
         if len(sys.argv) > 2:
             usrnm = sys.argv[1]

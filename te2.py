@@ -81,10 +81,9 @@ def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJ
 
 
 @app.post('/api/login')
-def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
+def login_api(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
     if username not in fake_db.keys() or password not in fake_db.values():
-        response = RedirectResponse(url="/")
-        return response
+        return "nope"
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # Create the tokens and passing to set_access_cookies or set_refresh_cookies
@@ -189,7 +188,7 @@ async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()
 
 
 @app.get("/api/{usr}/look/")
-async def lookup_file_api(usr: str, request: Request) -> dict:
+async def lookup_file_api(usr: str, request: Request,  Authorize: AuthJWT = Depends()) -> dict:
     try:
         temp = os.listdir(upload_folder + usr + "/")
     except:
