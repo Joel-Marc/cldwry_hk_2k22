@@ -67,6 +67,8 @@ def firs(request: Request):
 @app.post('/login')
 def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
     if username != "test" or password != "test":
+        response = RedirectResponse(url="/")
+        return response
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # Create the tokens and passing to set_access_cookies or set_refresh_cookies
@@ -76,7 +78,8 @@ def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJ
     # Set the JWT cookies in the response
     Authorize.set_access_cookies(access_token)
     Authorize.set_refresh_cookies(refresh_token)
-    return {"msg": "Successfully login"}
+    response = RedirectResponse(url="/"+username+"/look/")
+    return response
 
 
 @app.post('/refresh')
