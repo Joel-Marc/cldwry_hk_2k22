@@ -22,7 +22,7 @@ python3 cliapp.py {username} {pass} -del {file1} {file2} ... # To Delete
 python3 cliapp.py {username} {pass} -s {file1} {file2} ... # To Share (Shows list of avalilable users you can choose one or more; then input the users with comma to seperate)
 ```
 
-> If it asks for authentication use either of these usr:pass pairs {"stan": "sword", "joe": "win", "may": "spi"}
+> If it asks for authentication use either of these usr:pass pairs {"stan": "sword", "joe": "win", "may": "spi", "mith": "run", "cloud": "wiry"}
 
 ## USAGE EXAMPLES
 
