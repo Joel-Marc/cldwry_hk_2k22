@@ -16,11 +16,6 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 
-"""
-Note: This is just a basic example how to enable cookies.
-This is vulnerable to CSRF attacks, and should not be used this example.
-"""
-
 app = FastAPI()
 
 fake_db = {"stan": "sword", "joe": "win", "may": "spi"}
@@ -39,8 +34,10 @@ class Settings(BaseModel):
     authjwt_secret_key: str = "secret"
     # Configure application to store and get JWT from cookies
     authjwt_token_location: set = {"cookies"}
-    # Disable CSRF Protection for this example. default is True
-    authjwt_cookie_csrf_protect: bool = False
+
+    authjwt_cookie_secure: bool = False
+
+    authjwt_cookie_csrf_protect: bool = True
 
 
 @AuthJWT.load_config
@@ -96,11 +93,6 @@ def refresh(Authorize: AuthJWT = Depends()):
 
 @app.get('/logout')
 def logout(Authorize: AuthJWT = Depends()):
-    """
-    Because the JWT are stored in an httponly cookie now, we cannot
-    log the user out by simply deleting the cookies in the frontend.
-    We need the backend to send us a response to delete the cookies.
-    """
     # Authorize.jwt_required()
 
     Authorize.unset_jwt_cookies()

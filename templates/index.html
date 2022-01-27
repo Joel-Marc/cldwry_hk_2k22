@@ -93,6 +93,7 @@
     {% if usr %}
     <h1>WELCOME <a href="/{{usr}}/look/"> {{usr}} </a></h1>
     {% endif %}
+    <hr>
     <br>
     <h2> UPLOADFILES : </h2>
     {% if usr %}
@@ -165,7 +166,7 @@
     <br>
     <br>
     <h2>
-        OTHER'S ONLINE NOW:
+        <!-- OTHER'S ONLINE NOW:
     </h2>
     {% for ur in av %}
     <h3>
@@ -173,13 +174,13 @@
             {{ur}}
         </a>
     </h3>
-    {% endfor %}
+    {% endfor %} -->
 
 
-    <h3>
-        <a href="/logout">LOGOUT</a>
+        <h3>
+            <a href="/logout">LOGOUT</a>
 
-    </h3>
+        </h3>
 </body>
 
 </html>
