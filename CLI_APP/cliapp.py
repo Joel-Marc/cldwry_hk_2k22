@@ -24,6 +24,7 @@ def uplo_file(usr, files):
 
 def down_file(usr, files, to: str = ""):
     for file in files:
+        # print(file)
         with open(to+file, 'wb') as f:
             c = pycurl.Curl()
             c.setopt(c.URL, BASE_URL + usr + '/downfiles/' + file.replace(' ', '%20'))
@@ -74,7 +75,7 @@ def upd_file(usr, files):
 
     crl.setopt(crl.URL, BASE_URL + usr + '/updfiles/' + files[0].replace(' ', '%20'))
     data = {'to': files[1]}
-    print(data)
+    # print(data)
     pf = urlencode(data)
     crl.setopt(crl.FOLLOWLOCATION, True)
 
@@ -149,7 +150,7 @@ def logi(usrnm, passw):
 
 
 def login(usrnm, passw):
-    print(usrnm, passw)
+    # print(usrnm, passw)
 
     fl = False
     while(True):
@@ -158,30 +159,30 @@ def login(usrnm, passw):
         print("WELCOME " + usrnm)
         print("1. UPLOAD FILE \n2. DOWNLOAD FILE \n3. UPDATE FILE \n4. DELETE FILE \n5. SHARE \n6.LOGOUT")
         look_file(usrnm)
-        ch = input("ENTER YOUR CHOICE (1-6) : ")
+        ch = input("\nENTER YOUR CHOICE (1-6) : ")
         if ch == '1':
-            fil = input("ENTER FILE NAMES TO UPLOAD WITH SPACE to SEPERATE : ")
-            fil = fil.split(" ")
+            fil = input("ENTER FILE NAMES TO UPLOAD WITH comma to SEPERATE : ")
+            fil = fil.split(",")
             uplo_file(usrnm, fil)
         elif ch == '2':
-            fil = input("ENTER FILE NAMES TO DOWNLOAD WITH SPACE to SEPERATE : ")
-            fil = fil.split(" ")
+            fil = input("ENTER FILE NAMES TO DOWNLOAD WITH comma to SEPERATE : ")
+            fil = fil.split(",")
             to_loc = input("ENTER TO LOCATION either './' RELATIVE or ACTUAL '/home/...' OR just press enter : ")
             down_file(usrnm, fil, to_loc)
         elif ch == '3':
-            fil = input("ENTER FROM FILE NAME AND TO FILE NAME WITH SPACE to SEPERATE : ")
-            fil = fil.split(" ")
+            fil = input("ENTER FROM FILE NAME AND TO FILE NAME WITH comma to SEPERATE : ")
+            fil = fil.split(",")
             upd_file(usrnm, fil)
         elif ch == '4':
-            fil = input("ENTER FILE NAME/s TO DELETE WITH SPACE to SEPERATE : ")
-            fil = fil.split(" ")
+            fil = input("ENTER FILE NAME/s TO DELETE WITH comma to SEPERATE : ")
+            fil = fil.split(",")
             del_file(usrnm, fil)
         elif ch == '5':
             chk = curr_usr(usrnm)
-            fil = input("ENTER FILE NAME/s TO SEND WITH SPACE to SEPERATE : ")
-            fil = fil.split(" ")
-            to_usr = input("ENTER TO USER NAME/s to send to WITH SPACE TO SEPERATE : ")
-            for to_u in to_usr.split(" "):
+            fil = input("ENTER FILE NAME/s TO SEND WITH comma to SEPERATE : ")
+            fil = fil.split(",")
+            to_usr = input("ENTER TO USER NAME/s to send to WITH comma TO SEPERATE : ")
+            for to_u in to_usr.split(","):
                 if to_u in chk:
                     shr_file([to_u], usrnm, fil)
                 else:
@@ -216,7 +217,7 @@ if __name__ == '__main__':
             files = sys.argv[4:]
             fl = logi(usrnm, passw)
             if fl == False:
-                print(usrnm, passw, opre, files)
+                # print(usrnm, passw, opre, files)
                 if "l" in opre:
                     look_file(usrnm)
                 elif 'u' in opre:
@@ -229,8 +230,8 @@ if __name__ == '__main__':
                     del_file(usrnm, files)
                 elif 's' in opre:
                     chk = curr_usr(usrnm)
-                    to_usr = input("ENTER TO USER NAME/s with SPACE TO SEPERATE : ")
-                    for to_u in to_usr.split(" "):
+                    to_usr = input("ENTER TO USER NAME/s with comma TO SEPERATE : ")
+                    for to_u in to_usr.split(","):
                         if to_u in chk:
                             shr_file([to_u], usrnm, files)
                         else:

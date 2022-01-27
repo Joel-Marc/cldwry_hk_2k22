@@ -433,6 +433,7 @@ async def shrto_api(usr, ur, tem, request: Request = Optional):
     except:
         os.mkdir(upload_folder + ur + "/")
         shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
+        tem = "NOT SHARED"
 
     return {"FILE SHARED": tem, "TRANSFER": {"From": usr, "To": ur}}
 

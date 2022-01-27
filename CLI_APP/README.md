@@ -19,12 +19,12 @@ python3 cliapp.py {username} {pass} -d {file1} {file2} ... # To Download
 python3 cliapp.py {username} {pass} -u {file1} {file2} ... # To Upload
 python3 cliapp.py {username} {pass} -upd {filenm_from} {filenm_to} # To Rename
 python3 cliapp.py {username} {pass} -del {file1} {file2} ... # To Delete
-python3 cliapp.py {username} {pass} -s {file1} {file2} ... # To Share (Shows list of avalilable users you can choose one or more)
+python3 cliapp.py {username} {pass} -s {file1} {file2} ... # To Share (Shows list of avalilable users you can choose one or more; then input the users with comma to seperate)
 ```
 
 > If it asks for authentication use either of these usr:pass pairs {"stan": "sword", "joe": "win", "may": "spi"}
 
-## USAGE
+## USAGE EXAMPLES
 
 - As a menu based:
   
@@ -56,7 +56,7 @@ ENTER YOUR CHOICE (1-6) :
 
 ```bash
 ENTER YOUR CHOICE (1-6) : 2
-ENTER FILE NAMES TO DOWNLOAD WITH SPACE to SEPERATE : test.java 1.py
+ENTER FILE NAMES TO DOWNLOAD WITH comma to SEPERATE : test.java,1.py
 ENTER TO LOCATION either './' RELATIVE or ACTUAL '/home/...' OR just press enter : /home/jmarc/Desktop/
 ```
 
@@ -70,7 +70,7 @@ File 1  :  test.java
 File 2  :  1.py
 
 ENTER YOUR CHOICE (1-6) : 1
-ENTER FILE NAMES TO UPLOAD WITH SPACE to SEPERATE : /home/jmarc/Desktop/hello.png ./README.md
+ENTER FILE NAMES TO UPLOAD WITH comma to SEPERATE : /home/jmarc/Desktop/hello.png,./README.md
 {"Uploaded_Filenames":["hello.png","README.md"]}
 YOUR FILES:
 
@@ -93,7 +93,7 @@ File 3  :  1.py
 File 4  :  hello.png
 
 ENTER YOUR CHOICE (1-6) : 3   
-ENTER FROM FILE NAME AND TO FILE NAME WITH SPACE to SEPERATE : 1.py wow.py
+ENTER FROM FILE NAME AND TO FILE NAME WITH comma to SEPERATE : 1.py,wow.py
 {"Updated_Filenames":{"From":"1.py","To":"wow.py"}}
 
 YOUR FILES:
@@ -118,7 +118,7 @@ File 3  :  wow.py
 File 4  :  hello.png
 
 ENTER YOUR CHOICE (1-6) : 4
-ENTER FILE NAME/s TO DELETE WITH SPACE to SEPERATE : wow.py win.py
+ENTER FILE NAME/s TO DELETE WITH comma to SEPERATE : wow.py,win.py
 DELETED_FILE  :  wow.py
 NOT_DELETED_FILE  :  TRY AGAIN
 
@@ -148,8 +148,8 @@ joe
 may
 
 
-ENTER FILE NAME/s TO SEND WITH SPACE to SEPERATE : test.java hello.png
-ENTER TO USER NAME/s to send to WITH SPACE TO SEPERATE : stan may
+ENTER FILE NAME/s TO SEND WITH comma to SEPERATE : test.java,hello.png
+ENTER TO USER NAME/s to send to WITH comma TO SEPERATE : stan,may
 FILE SHARED  :  test.java
 TRANSFER  :  {'From': 'joe', 'To': 'stan'}
 FILE SHARED  :  hello.png
