@@ -280,7 +280,7 @@ async def down_file_api(usr, fname):
 
 @app.get("/{usr}/prevget/{fname}")
 async def prev_file(usr, fname):
-
+    print(fname.split('.')[-1])
     # return {"The directory": os.path.realpath(upload_folder + usr + "/"+fname)}
     return FileResponse(upload_folder + usr + "/"+fname)
 
