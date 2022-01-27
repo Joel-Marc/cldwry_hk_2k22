@@ -117,7 +117,7 @@ async def logout(credentials: HTTPBasicCredentials = Depends(security), request:
 
 @app.get('/{usr}')
 @app.get("/{usr}/look/")
-async def lookup_file(usr: str, request: Request) -> dict:
+async def lookup_file(usr: str, request: Request, username: str = Depends(get_current_username)) -> dict:
     try:
         temp = os.listdir(upload_folder + usr + "/")
     except:
@@ -268,7 +268,22 @@ async def shrto_api(usr, ur, tem, request: Request = Optional):
 
 @ app.get("/{usr}/downfiles/{fname}")
 async def down_file(usr, fname):
-    print(usr)
+    try:
+        temp = os.path.abspath(upload_folder + usr + "/" + fname)
+    except:
+        try:
+            temp = os.listdir(upload_folder + usr + "/")
+        except:
+            os.mkdir(upload_folder + usr + "/")
+            temp = os.listdir(upload_folder + usr + "/")
+        files = {}
+        for i, a in enumerate(temp):
+            files["File "+str(i)] = a
+        return TEMPLATES.TemplateResponse(
+            "index.html",
+            {"request": request, "recipes": files,  "usr": usr, "av": [i for i in fake_db.keys() if i != usr]},
+        )
+    print(usr, temp)
     return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
 
 
