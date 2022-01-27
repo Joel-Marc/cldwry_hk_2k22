@@ -3,15 +3,17 @@
 The WEB-APP is [ACTIVE HERE](https://drive-cldwry-2k22.herokuapp.com/)
 The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/master/CLI_APP/README.md)
 
+- Libraries Used - FastAPI, pymongo, PIL, hashlib FOR the Backend, 
+
 ## Features of WEB-APP
 
 - Login over HTTP , hash of password is checked by retriving from MongoDB Cluster in MongoDB Atlas.
-- UPLOAD one or More File/s At a time - Image Compression using Pillow Library
+- UPLOAD one or More File/s At a time - Image Compression using Pillow Library - (i wasnt able to do audio or video compression because heroku doesnt allow ffmpeg library installation)
 - Download Files (shows preview of the file too)
 - Re-Name Files (can be exact name with file extention or with out one)
 - Delete Files
 - Share Files
-- Go b/w Users
+- LogOut
 
 All operations are straight Forward
 
@@ -19,16 +21,16 @@ All operations are straight Forward
 
 ## Drawbacks and Limitations WEB-APP
 
-- Havent used 
+- 
 
 The blob storage application should have the following features:
 
 1. ~~Checkpoint A - User authentication and session management~~ (Technically done)
 2. ~~Checkpoint B - Implementation of the blob storage server~~
-3. ~~Checkpoint C - Client application (CLI/ web based) for file upload, download, rename and delete~~
+3. ~~Checkpoint C - Client application (CLI/ web based) for file upload, download, rename and delete~~ (BOTH DONE)
 4. ~~Checkpoint D - User based access control on who can access the files~~
-5. ~~Checkpoint E - Deploy the application~~
-6. Checkpoint F (optional - bonus points) - File compression (will try)
+5. ~~Checkpoint E - Deploy the application~~ (HOSTED IN Heroku)
+6. ~~Checkpoint F (optional - bonus points) - File compression~~ (Image Compression done 'jpg', 'png', 'jpeg', 'gif', 'raw' -> '.jpg')
 
 ## To Do
 

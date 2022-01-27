@@ -1,4 +1,3 @@
-from typing import Optional
 from urllib.parse import urlencode
 from io import BytesIO
 import ast

@@ -7,6 +7,7 @@ pip install -r requirements.txt
 ```
 
 - The app can be used as a menu based application or even as a one-liner cli command, Examples will be shown.
+- Same Features as the WEB-APP
 
 ## CLI USAGE
 
