@@ -6,7 +6,7 @@ The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/maste
 ## Features of WEB-APP
 
 - UPLOAD one or More File/s At a time
-- Download Files
+- Download Files (shows preview of the file too)
 - Re-Name Files (can be exact name with file extention or with out one)
 - Delete Files
 - Share Files
