@@ -20,6 +20,15 @@ All operations are straight Forward
 
 - I have not been able to implement checkpoint A (Authentication and session management) (YET!!) to implement session management ive divided user sessions/repos as folders under the folder ./fil. So, To Go between Users ive put anchor tags.
 
+The blob storage application should have the following features:
+
+1. Checkpoint A - User authentication and session management (Technically done that) (will improve to standards)
+2. ~~Checkpoint B - Implementation of the blob storage server~~
+3. ~~Checkpoint C - Client application (CLI/ web based) for file upload, download, rename and delete~~
+4. ~~Checkpoint D - User based access control on who can access the files~~
+5. ~~Checkpoint E - Deploy the application~~
+6. Checkpoint F (optional - bonus points) - File compression (will try)
+
 ## To Do
 
 - Write V2 Proper Readme - Explain Usage, Drawbacks and Limitations.
