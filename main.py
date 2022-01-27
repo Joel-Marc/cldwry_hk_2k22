@@ -64,6 +64,9 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 @app.get('/')
 @app.post('/')
 def firs(request: Request):
+    """
+    Renders the main page for the WEB-APP
+    """
     return TEMPLATES.TemplateResponse(
         "login.html",
         {"request": request},
@@ -72,8 +75,11 @@ def firs(request: Request):
 
 @app.post('/login')
 def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
-    coll = db['users']
+    """
+    Logs in for the WEB-APP, checks if pass hash matches and creates a cookie for the session and redirects to /look of the user
+    """
 
+    coll = db['users']
     # print(hashlib.sha256('win'.encode()).hexdigest())
     # coll.insert_many(
     #     [{'username': 'joe', 'phash': hashlib.sha256("win".encode()).hexdigest()},
@@ -105,6 +111,9 @@ def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJ
 
 @app.post('/regist')
 def regist(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
+    """
+    Registers for WEB-APP by adding the document to MongoDB Cluster, makes a cookie for the session and redirects to /look of the user
+    """
     coll = db['users']
     phash = hashlib.sha256(password.encode()).hexdigest()
 
@@ -123,6 +132,12 @@ def regist(username: str = Form(...), password: str = Form(...), Authorize: Auth
     access_token = Authorize.create_access_token(subject=username)
     refresh_token = Authorize.create_refresh_token(subject=username)
 
+    coll = db['users']
+
+    for i in coll.find({}):
+        # temp = {}
+        fake_db[i['username']] = i['phash']
+
     # Set the JWT cookies in the response
     Authorize.set_access_cookies(access_token)
     Authorize.set_refresh_cookies(refresh_token)
@@ -132,6 +147,9 @@ def regist(username: str = Form(...), password: str = Form(...), Authorize: Auth
 
 @app.post('/api/login')
 def login_api(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
+    """
+    Logs in for thr CLI-APP, checks if pass hash matches and creates a cookie for the session and redirects to /look of the user
+    """
     coll = db['users']
 
     # print(hashlib.sha256('win'.encode()).hexdigest())
@@ -148,9 +166,9 @@ def login_api(username: str = Form(...), password: str = Form(...), Authorize: A
 
     ckhash = hashlib.sha256(password.encode()).hexdigest()
     if username not in fin.keys() or ckhash not in fin.values():
-        response = RedirectResponse(url="/")
-        return response
-        raise HTTPException(status_code=401, detail="Bad username or password")
+        # response = RedirectResponse(url="/")
+        return "nope"
+        # raise HTTPException(status_code=401, detail="Bad username or password")
 
     # Create the tokens and passing to set_access_cookies or set_refresh_cookies
     access_token = Authorize.create_access_token(subject=username)
@@ -172,6 +190,9 @@ def refresh(Authorize: AuthJWT = Depends()):
 
 @app.get('/logout')
 def logout(Authorize: AuthJWT = Depends()):
+    """ 
+    LOGS OUT for the WEB-APP , UNSETS THE JWT Token in Cookies , redirects to root page /
+    """
     # Authorize.jwt_required()
 
     Authorize.unset_jwt_cookies()
@@ -185,6 +206,9 @@ def logout(Authorize: AuthJWT = Depends()):
 
 @app.post("/{usr}/uploadfiles/")
 async def create_file(usr, request: Request = Optional, file: List[UploadFile] = File(...), Authorize: AuthJWT = Depends()):
+    """ 
+    The way WEB-APP Uploads and then renders the main page 
+    """
     print(usr)
     global upload_folder
     for f in file:
@@ -223,6 +247,9 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
 
 @app.post("/api/{usr}/uploadfiles/")
 async def create_file_api(usr, request: Request = Optional, file: List[UploadFile] = File(...)):
+    """ 
+    The way CLI-APP Uploads and then returns appropriate response either the uploaded filename or not 
+    """
     print(usr)
     global upload_folder
     for f in file:
@@ -238,13 +265,16 @@ async def create_file_api(usr, request: Request = Optional, file: List[UploadFil
 @app.get("/{usr}/look/")
 @app.post("/{usr}/look/")
 async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()) -> dict:
+    """ 
+    The way WEB-APP renders the main page with all the file names and operations
+    """
     print(Authorize.get_jwt_subject())
     try:
         temp = os.listdir(upload_folder + usr + "/")
     except:
         os.mkdir(upload_folder + usr + "/")
         temp = os.listdir(upload_folder + usr + "/")
-    print(usr, fake_db.keys)
+    print(usr, fake_db.keys())
     files = {}
     for i, a in enumerate(temp):
         files["File "+str(i)] = a
@@ -256,6 +286,9 @@ async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()
 
 @app.get("/api/{usr}/look/")
 async def lookup_file_api(usr: str, request: Request, Authorize: AuthJWT = Depends()) -> dict:
+    """ 
+    The way CLI-APP gets the file name list of the user
+    """
     print(Authorize.get_jwt_subject())
     try:
         temp = os.listdir(upload_folder + usr + "/")
@@ -271,7 +304,9 @@ async def lookup_file_api(usr: str, request: Request, Authorize: AuthJWT = Depen
 
 @app.get("/{usr}/delefiles/{fname}")
 async def del_file(usr, fname, request: Request = Optional, Authorize: AuthJWT = Depends()):
-
+    """ 
+    The way WEB-APP Deletes the file
+    """
     print(usr)
     try:
         os.remove(upload_folder + usr + "/" + fname)
@@ -304,7 +339,9 @@ async def del_file(usr, fname, request: Request = Optional, Authorize: AuthJWT =
 
 @app.get("/api/{usr}/delefiles/{fname}")
 async def del_file_api(usr, fname, request: Request = Optional):
-
+    """ 
+    The way CLI-APP Deletes and then returns appropriate response either the deleted filename or not 
+    """
     print(usr)
     try:
         os.remove(upload_folder + usr + "/" + fname)
@@ -321,6 +358,9 @@ async def del_file_api(usr, fname, request: Request = Optional):
 
 @app.post("/{usr}/updfiles/{fro}/")
 async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Optional, Authorize: AuthJWT = Depends()):
+    """ 
+    The way WEB-APP Updates the file and then renders the main page 
+    """
     print(usr)
     if not "." in to:
         os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[-1])
@@ -344,6 +384,9 @@ async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Option
 
 @app.post("/api/{usr}/updfiles/{fro}/")
 async def updfiles_api(usr, fro: str, to: str = Form(...), request: Request = Optional):
+    """ 
+    The way CLI-APP Updates and then returns appropriate response either the updated filename or not 
+    """
     print(usr)
     if not "." in to:
         os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[-1])
@@ -356,6 +399,9 @@ async def updfiles_api(usr, fro: str, to: str = Form(...), request: Request = Op
 
 @app.get('/{usr}/shrto/{ur}/{tem}')
 async def shrto(usr, ur, tem, request: Request = Optional, Authorize: AuthJWT = Depends()):
+    """ 
+    The way WEB-APP Shares the file and then renders the main page 
+    """
     try:
         shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
         print(usr, ur, tem)
@@ -378,6 +424,9 @@ async def shrto(usr, ur, tem, request: Request = Optional, Authorize: AuthJWT = 
 
 @app.get('/api/{usr}/shrto/{ur}/{tem}')
 async def shrto_api(usr, ur, tem, request: Request = Optional):
+    """ 
+    The way CLI-APP shares and then returns appropriate response either the shared filename  and how transfer happned or not 
+    """
     try:
         shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
         print(usr, ur, tem)
@@ -390,6 +439,9 @@ async def shrto_api(usr, ur, tem, request: Request = Optional):
 
 @ app.get("/{usr}/downfiles/{fname}")
 async def down_file(usr, fname,  request: Request = Optional, Authorize: AuthJWT = Depends()):
+    """ 
+    The way WEB-APP Downloads and then renders the main page 
+    """
     try:
         temp = os.path.abspath(upload_folder + usr + "/" + fname)
     except:
@@ -411,12 +463,18 @@ async def down_file(usr, fname,  request: Request = Optional, Authorize: AuthJWT
 
 @ app.get("/api/{usr}/downfiles/{fname}")
 async def down_file_api(usr, fname):
+    """ 
+    The way CLI-APP Downloads and then returns appropriate response 
+    """
     print(usr)
     return FileResponse(upload_folder + usr + "/"+fname, media_type='application/octet-stream', filename=fname)
 
 
 @app.get("/{usr}/prevget/{fname}")
 async def prev_file(usr, fname):
+    """ 
+    The way WEB-APP gets the preview and then renders it in the main page 
+    """
     print(fname.split('.')[-1])
     # return {"The directory": os.path.realpath(upload_folder + usr + "/"+fname)}
     return FileResponse(upload_folder + usr + "/"+fname)
@@ -424,4 +482,7 @@ async def prev_file(usr, fname):
 
 @app.get("/api/cur_usr")
 async def send_usrs():
+    """ 
+    The way CLI-APP gets the current users from the db 
+    """
     return {"CURRENT USERS": [i for i in fake_db.keys()]}
