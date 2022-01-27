@@ -18,11 +18,11 @@ All operations are straight Forward
 
 ## Drawbacks and Limitations WEB-APP
 
-- I have not been able to implement checkpoint A (Authentication and session management) (YET!!) to implement session management ive divided user sessions/repos as folders under the folder ./fil. So, To Go between Users ive put anchor tags 
+- I have not been able to implement checkpoint A (Authentication and session management) (YET!!) to implement session management ive divided user sessions/repos as folders under the folder ./fil. So, To Go between Users ive put anchor tags.
 
 ## To Do
 
-- Write Proper Readme - Explain Usage, Drawbacks and Limitations.
+- Write V2 Proper Readme - Explain Usage, Drawbacks and Limitations.
 - ~~Build a CLI based Application to access api~~
 - Try Compression for specific file formats flac to mp3, every image format to jpeg, maybe pdf to bit more higher compressed version of that.
 - Make Login and Authentication and proper session management Possible -> Store hashed pass and check (Using MongoDB or SQLite) -> if time permits Fastapi Oauth or token based authentication and session management.

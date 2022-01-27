@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOUR DRIVE</title>
+    <title>
+        {% if usr %}
+        {{usr}} YOUR DRIVE
+        {% endif %}
+    </title>
     <style>
         * {
             box-sizing: border-box;
@@ -87,82 +91,82 @@
 
 <body>
     {% if usr %}
-    <h1>WELCOME <a href="/{{usr}/look/"> {{usr}} </a></h1>
+    <h1>WELCOME <a href="/{{usr}}/look/"> {{usr}} </a></h1>
     {% endif %}
     <br>
     <h2> UPLOADFILES : </h2>
     {% if usr %}
     <form action="/{{usr}}/uploadfiles/" enctype="multipart/form-data" method="post">
-            <input name="file" type="file" multiple>
-            <input type="submit">
-            </form>
-            {% endif %}
-            <br>
-            <br>
-            <h2> IN DRIVE : </h2>
-            <table>
-                <th>SNO</th>
-                <th>FILENAME</th>
-                <th>DELETE</th>
-                <th>UPDATE NAME</th>
-                <th>SHARE</th>
-                {% for fno,tem in recipes.items() %}
-                <tr>
-                    <td>
-                        <a href="/{{usr}}/downfiles/{{tem}}">
-                            {{fno}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="/{{usr}}/downfiles/{{tem}}">
-                            <embed src="/{{usr}}/prevget/{{tem}}" width="210px" height="201px" />
-                            {{tem}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="/{{usr}}/delefiles/{{tem}}">
-                            DELETE FILE
-                        </a>
-                    </td>
-                    <td>
-                        <a href="/{{usr}}/delefiles/{{tem}}">
-                            RENAME FILE
-                        </a>
-                        <form action="/{{usr}}/updfiles/{{tem}}" method="POST">
-                            <input name="to" type="text">
-                            <input type="submit">
-                        </form>
-                    </td>
-                    <td>
-                        {% for ur in av %}
-
-
-
-                        <a href="/{{usr}}/shrto/{{ur}}/{{tem}}"> {{ur}}</a>
-
-
-                        {% endfor %}
-                    </td>
-                </tr>
-                <br>
-                {% endfor %}
-            </table>
-
-            <br>
-            <br>
-            <h2>
-                OTHER'S ONLINE NOW:
-            </h2>
-            {% for ur in av %}
-            <h3>
-                <a href="/{{ur}}/look/">
-                    {{ur}}
+        <input name="file" type="file" multiple>
+        <input type="submit">
+    </form>
+    {% endif %}
+    <br>
+    <br>
+    <h2> IN DRIVE : </h2>
+    <table>
+        <th>SNO</th>
+        <th>FILENAME</th>
+        <th>DELETE</th>
+        <th>UPDATE NAME</th>
+        <th>SHARE</th>
+        {% for fno,tem in recipes.items() %}
+        <tr>
+            <td>
+                <a href="/{{usr}}/downfiles/{{tem}}">
+                    {{fno}}
                 </a>
-            </h3>
-            {% endfor %}
+            </td>
+            <td>
+                <a href="/{{usr}}/downfiles/{{tem}}">
+                    <embed src="/{{usr}}/prevget/{{tem}}" width="210px" height="201px" />
+                    {{tem}}
+                </a>
+            </td>
+            <td>
+                <a href="/{{usr}}/delefiles/{{tem}}">
+                    DELETE FILE
+                </a>
+            </td>
+            <td>
+                <a href="/{{usr}}/delefiles/{{tem}}">
+                    RENAME FILE
+                </a>
+                <form action="/{{usr}}/updfiles/{{tem}}" method="POST">
+                    <input name="to" type="text">
+                    <input type="submit">
+                </form>
+            </td>
+            <td>
+                {% for ur in av %}
 
 
-            <!-- <h3>
+
+                <a href="/{{usr}}/shrto/{{ur}}/{{tem}}"> {{ur}}</a>
+
+
+                {% endfor %}
+            </td>
+        </tr>
+        <br>
+        {% endfor %}
+    </table>
+
+    <br>
+    <br>
+    <h2>
+        OTHER'S ONLINE NOW:
+    </h2>
+    {% for ur in av %}
+    <h3>
+        <a href="/{{ur}}/look/">
+            {{ur}}
+        </a>
+    </h3>
+    {% endfor %}
+
+
+    <!-- <h3>
         <a href="/logout">LOGOUT</a>
 
     </h3> -->

@@ -20,6 +20,7 @@ python3 cliapp.py {username} {pass} -upd {filenm_from} {filenm_to} # To Rename
 python3 cliapp.py {username} {pass} -del {file1} {file2} ... # To Delete
 python3 cliapp.py {username} {pass} -s {file1} {file2} ... # To Share (Shows list of avalilable users you can choose one or more)
 ```
+
 > If it asks for authentication use either of these usr:pass pairs {"stan": "sword", "joe": "win", "may": "spi"}
 
 ## USAGE
