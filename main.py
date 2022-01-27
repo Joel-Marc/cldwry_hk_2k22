@@ -244,7 +244,7 @@ async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()
     except:
         os.mkdir(upload_folder + usr + "/")
         temp = os.listdir(upload_folder + usr + "/")
-    print(usr)
+    print(usr, fake_db.keys)
     files = {}
     for i, a in enumerate(temp):
         files["File "+str(i)] = a
