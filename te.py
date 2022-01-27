@@ -60,7 +60,7 @@ def read_current_user(username: str = Depends(get_current_username),  request: R
 
 
 @app.post("/{usr}/uploadfiles/")
-async def create_file(usr, request: Request = Optional, file: List[UploadFile] = File(...)):
+async def create_file(usr, request: Request = Optional, file: List[UploadFile] = File(...), username: str = Depends(get_current_username)):
     print(usr)
     global upload_folder
     for f in file:
@@ -148,7 +148,7 @@ async def lookup_file_api(usr: str, request: Request) -> dict:
 
 
 @app.get("/{usr}/delefiles/{fname}")
-async def del_file(usr, fname, request: Request = Optional):
+async def del_file(usr, fname, request: Request = Optional, username: str = Depends(get_current_username)):
 
     print(usr)
     try:
@@ -198,7 +198,7 @@ async def del_file_api(usr, fname, request: Request = Optional):
 
 
 @app.post("/{usr}/updfiles/{fro}/")
-async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Optional):
+async def updfiles(usr, fro: str, to: str = Form(...), request: Request = Optional, username: str = Depends(get_current_username)):
     print(usr)
     if not "." in to:
         os.rename(upload_folder + usr + "/" + fro, upload_folder + usr + "/" + to + "." + fro.split(".")[1])
@@ -233,7 +233,7 @@ async def updfiles_api(usr, fro: str, to: str = Form(...), request: Request = Op
 
 
 @app.get('/{usr}/shrto/{ur}/{tem}')
-async def shrto(usr, ur, tem, request: Request = Optional):
+async def shrto(usr, ur, tem, request: Request = Optional, username: str = Depends(get_current_username)):
     try:
         shutil.copyfile(upload_folder + usr + "/" + tem, upload_folder + ur + "/" + tem)
         print(usr, ur, tem)
@@ -267,7 +267,7 @@ async def shrto_api(usr, ur, tem, request: Request = Optional):
 
 
 @ app.get("/{usr}/downfiles/{fname}")
-async def down_file(usr, fname):
+async def down_file(usr, fname, username: str = Depends(get_current_username)):
     try:
         temp = os.path.abspath(upload_folder + usr + "/" + fname)
     except:
