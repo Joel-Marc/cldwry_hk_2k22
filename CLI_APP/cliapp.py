@@ -139,11 +139,12 @@ def logi(usrnm, passw):
     crl.perform()
     crl.close()
     TOKEN = b_obj.getvalue().decode('utf8')
-    if TOKEN != "nope":
+    if "nope" not in str(TOKEN):
         print(TOKEN)
         print("\n")
         return False
     else:
+        print('ENTER CORRECT AUTH DETAILS use either of these usr:pass pairs "stan": "sword", "joe": "win", "may": "spi" \n')
         return True
 
 
@@ -213,27 +214,29 @@ if __name__ == '__main__':
             passw = sys.argv[2]
             opre = sys.argv[3].split("-")
             files = sys.argv[4:]
-            # print(usrnm, passw, opre, files)
-            if "l" in opre:
-                look_file(usrnm)
-            elif 'u' in opre:
-                uplo_file(usrnm, files)
-            elif 'd' in opre:
-                down_file(usrnm, files)
-            elif 'upd' in opre:
-                upd_file(usrnm, files)
-            elif 'del' in opre:
-                del_file(usrnm, files)
-            elif 's' in opre:
-                chk = curr_usr(usrnm)
-                to_usr = input("ENTER TO USER NAME/s with SPACE TO SEPERATE : ")
-                for to_u in to_usr.split(" "):
-                    if to_u in chk:
-                        shr_file([to_u], usrnm, files)
-                    else:
-                        print("ENTER THE RIGHT TO USERNAME")
-            else:
-                print("CHOOSE CORRECT OPERATION")
+            fl = logi(usrnm, passw)
+            if fl == False:
 
+                # print(usrnm, passw, opre, files)
+                if "l" in opre:
+                    look_file(usrnm)
+                elif 'u' in opre:
+                    uplo_file(usrnm, files)
+                elif 'd' in opre:
+                    down_file(usrnm, files)
+                elif 'upd' in opre:
+                    upd_file(usrnm, files)
+                elif 'del' in opre:
+                    del_file(usrnm, files)
+                elif 's' in opre:
+                    chk = curr_usr(usrnm)
+                    to_usr = input("ENTER TO USER NAME/s with SPACE TO SEPERATE : ")
+                    for to_u in to_usr.split(" "):
+                        if to_u in chk:
+                            shr_file([to_u], usrnm, files)
+                        else:
+                            print("ENTER THE RIGHT TO USERNAME")
+                else:
+                    print("CHOOSE CORRECT OPERATION")
         else:
-            print("INPUT YOUR USERNAME AND PASS PROPERLY!!!")
+            print('INPUT YOUR USERNAME AND PASS PROPERLY!!! use either of these usr:pass pairs "stan": "sword", "joe": "win", "may": "spi" \n')

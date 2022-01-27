@@ -115,19 +115,6 @@ def logout(Authorize: AuthJWT = Depends()):
     return {"msg": "Successfully logout"}
 
 
-@app.get('/protected')
-def protected(Authorize: AuthJWT = Depends()):
-    """
-    We do not need to make any changes to our protected endpoints. They
-    will all still function the exact same as they do when sending the
-    JWT in via a headers instead of a cookies
-    """
-    Authorize.jwt_required()
-
-    current_user = Authorize.get_jwt_subject()
-    return {"user": current_user}
-
-
 @app.post("/{usr}/uploadfiles/")
 async def create_file(usr, request: Request = Optional, file: List[UploadFile] = File(...), Authorize: AuthJWT = Depends()):
     print(usr)
@@ -172,6 +159,7 @@ async def create_file_api(usr, request: Request = Optional, file: List[UploadFil
 @app.get("/{usr}/look/")
 @app.post("/{usr}/look/")
 async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()) -> dict:
+    print(Authorize.get_jwt_subject())
     try:
         temp = os.listdir(upload_folder + usr + "/")
     except:
@@ -188,7 +176,8 @@ async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()
 
 
 @app.get("/api/{usr}/look/")
-async def lookup_file_api(usr: str, request: Request,  Authorize: AuthJWT = Depends()) -> dict:
+async def lookup_file_api(usr: str, request: Request, Authorize: AuthJWT = Depends()) -> dict:
+    print(Authorize.get_jwt_subject())
     try:
         temp = os.listdir(upload_folder + usr + "/")
     except:
