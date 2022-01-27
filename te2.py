@@ -57,6 +57,7 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 
 
 @app.get('/')
+@app.post('/')
 def firs(request: Request):
     return TEMPLATES.TemplateResponse(
         "login.html",
@@ -66,7 +67,7 @@ def firs(request: Request):
 
 @app.post('/login')
 def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
-    if username != "test" or password != "test":
+    if username not in fake_db.keys() or password not in fake_db.values():
         response = RedirectResponse(url="/")
         return response
         raise HTTPException(status_code=401, detail="Bad username or password")
