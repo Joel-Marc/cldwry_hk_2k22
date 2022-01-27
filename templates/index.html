@@ -120,19 +120,21 @@
             </td>
             <td>
                 <a href="/{{usr}}/downfiles/{{tem}}">
-                    {% if tem.split('.')[-1] in ["flac", "mp3"] %}
-                    <audio controls>
-                        <source src="/{{usr}}/prevget/{{tem}}" type="audio/mpeg">
-                    </audio>
-                    {% elif tem.split('.')[-1] in ["mp4"] %}
-                    <video width="320" height="240" controls>
-                        <source src="/{{usr}}/prevget/{{tem}}" type="video/mp4">
-                    </video>
-                    {% else %}
-                    <embed src="/{{usr}}/prevget/{{tem}}" width="210px" height="201px" autostart="0" />
-                    {% endif %}
                     {{tem}}
                 </a>
+                {% if tem.split('.')[-1] in ["flac", "mp3"] %}
+                <audio controls>
+                    <source src="/{{usr}}/prevget/{{tem}}" type="audio/mpeg">
+                </audio>
+                {% elif tem.split('.')[-1] in ["mp4"] %}
+                <video width="320" height="240" controls>
+                    <source src="/{{usr}}/prevget/{{tem}}" type="video/mp4">
+                </video>
+                {% else %}
+                <embed src="/{{usr}}/prevget/{{tem}}" width="210px" height="201px" autostart="0" />
+                {% endif %}
+
+
             </td>
             <td>
                 <a href="/{{usr}}/delefiles/{{tem}}">

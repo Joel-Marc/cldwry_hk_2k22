@@ -122,7 +122,7 @@ def curr_usr(usr):
                 print(it)
 
     print("\n")
-    return [i for i in fin["CURRENT USERS"] if i != usr]
+    return [i for i in fin["CURRENT USERS"] if i not in usr]
 
 
 def logi(usrnm, passw):
