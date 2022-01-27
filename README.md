@@ -22,7 +22,7 @@ All operations are straight Forward
 
 The blob storage application should have the following features:
 
-1. Checkpoint A - User authentication and session management (Technically done that) (will improve to standards)
+1. Checkpoint A - User authentication (Not done properly) and session management (Technically done that) (will improve to standards)
 2. ~~Checkpoint B - Implementation of the blob storage server~~
 3. ~~Checkpoint C - Client application (CLI/ web based) for file upload, download, rename and delete~~
 4. ~~Checkpoint D - User based access control on who can access the files~~
