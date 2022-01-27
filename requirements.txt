@@ -12,3 +12,4 @@ SQLAlchemy==1.4.27
 starlette==0.17.1
 uvicorn==0.15.0
 websockets==10.1
+fastapi-jwt-auth==0.5.0
