@@ -3,7 +3,7 @@
 - The WEB-APP is [ACTIVE HERE](https://drive-cldwry-2k22.herokuapp.com/) DEMO VIDEO [Here](https://drive.google.com/file/d/1OOKMo7FlSpO9lMwOf2oxPPJsvIxuUDky/view?usp=sharing)
 - The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/master/CLI_APP/README.md) DEMO VIDEO [Here](https://drive.google.com/file/d/1KHnlLSwQca4Bd9-L1y69MIh5MGG8yfnY/view?usp=sharing)
 
-- Libraries Used - FastAPI, pymongo, PIL, hashlib FOR the Backend, jinja2 -> Web-APP, pycurl -> CLI-APP
+- Libraries Used - FastAPI, pymongo, PIL, hashlib FOR the Backend, jinja2 -> Web-APP, pycurl -> CLI-APP FOR the Frontend.
 
 ## Features of WEB-APP
 
@@ -27,10 +27,4 @@ The blob storage application should have the following features:
 4. ~~Checkpoint D - User based access control on who can access the files~~
 5. ~~Checkpoint E - Deploy the application~~ (HOSTED IN Heroku)
 6. ~~Checkpoint F (optional - bonus points) - File compression~~ (Image Compression done 'jpg', 'png', 'jpeg', 'gif', 'raw' -> '.jpg')
-
-## To Do
-
-- Write V2 Proper Readme - Explain Usage, Drawbacks and Limitations.
-- Try Compression for specific file formats flac to mp3, every image format to jpeg, maybe pdf to bit more higher compressed version of that.
-- Actually use pydantic models, OOPS Concepts, and Proper Naming Standards.
   
