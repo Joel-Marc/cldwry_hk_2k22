@@ -18,6 +18,14 @@ client = pymongo.MongoClient(
     "mongodb+srv://joe:marc@cluster0.ooljk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client.test
 
+coll = db['users']
+
+
+fake_db = {}
+for i in coll.find({}):
+    # temp = {}
+    fake_db[i['username']] = i['phash']
+
 app = FastAPI()
 
 
@@ -172,14 +180,6 @@ def logout(Authorize: AuthJWT = Depends()):
 
     return {"msg": "Successfully logout"}
 
-
-coll = db['users']
-
-
-fake_db = {}
-for i in coll.find({}):
-    # temp = {}
-    fake_db[i['username']] = i['phash']
     # print(fin)
 
 
