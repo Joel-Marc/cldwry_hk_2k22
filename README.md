@@ -6,7 +6,7 @@ The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/maste
 ## Features of WEB-APP
 
 - Login over HTTP , hash of password is checked by retriving from MongoDB Cluster in MongoDB Atlas.
-- UPLOAD one or More File/s At a time
+- UPLOAD one or More File/s At a time - Image Compression using Pillow Library
 - Download Files (shows preview of the file too)
 - Re-Name Files (can be exact name with file extention or with out one)
 - Delete Files

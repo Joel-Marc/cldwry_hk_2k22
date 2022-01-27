@@ -148,6 +148,7 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
             im = Image.open(upload_folder + usr + "/" + f.filename)
             rgb_im = im.convert('RGB')
             rgb_im.save(upload_folder + usr + "/" + ".".join(spfnm[:-1]) + '.jpg')
+            os.remove(upload_folder + usr + "/" + f.filename)
 
     try:
         temp = os.listdir(upload_folder + usr + "/")
