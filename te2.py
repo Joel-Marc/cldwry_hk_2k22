@@ -15,6 +15,12 @@ from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
+import pymongo
+import hashlib
+
+client = pymongo.MongoClient(
+    "mongodb+srv://joe:marc@cluster0.ooljk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+db = client.test
 
 app = FastAPI()
 
@@ -64,7 +70,22 @@ def firs(request: Request):
 
 @app.post('/login')
 def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
-    if username not in fake_db.keys() or password not in fake_db.values():
+    coll = db['users']
+
+    # print(hashlib.sha256('win'.encode()).hexdigest())
+    # coll.insert_many(
+    #     [{'username': 'joe', 'phash': hashlib.sha256("win".encode()).hexdigest()},
+    #      {'username': 'may', 'phash': hashlib.sha256("spi".encode()).hexdigest()},
+    #      {'username': 'stan', 'phash': hashlib.sha256("sword".encode()).hexdigest()}])
+    # # coll.delete_many({})
+    fin = {}
+    for i in coll.find({'username': username}):
+        # temp = {}
+        fin[i['username']] = i['phash']
+        print(fin)
+
+    ckhash = hashlib.sha256(password.encode()).hexdigest()
+    if username not in fin.keys() or ckhash not in fin.values():
         response = RedirectResponse(url="/")
         return response
         raise HTTPException(status_code=401, detail="Bad username or password")

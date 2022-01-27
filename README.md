@@ -18,11 +18,11 @@ All operations are straight Forward
 
 ## Drawbacks and Limitations WEB-APP
 
-- I have not been able to implement checkpoint A (Authentication and session management) (YET!!) to implement session management ive divided user sessions/repos as folders under the folder ./fil. So, To Go between Users ive put anchor tags.
+- Havent used 
 
 The blob storage application should have the following features:
 
-1. Checkpoint A - User authentication (Not done properly) and session management (Technically done that) (will improve to standards)
+1. ~~Checkpoint A - User authentication and session management~~ (Technically done)
 2. ~~Checkpoint B - Implementation of the blob storage server~~
 3. ~~Checkpoint C - Client application (CLI/ web based) for file upload, download, rename and delete~~
 4. ~~Checkpoint D - User based access control on who can access the files~~
@@ -34,7 +34,7 @@ The blob storage application should have the following features:
 - Write V2 Proper Readme - Explain Usage, Drawbacks and Limitations.
 - ~~Build a CLI based Application to access api~~
 - Try Compression for specific file formats flac to mp3, every image format to jpeg, maybe pdf to bit more higher compressed version of that.
-- Make Login and Authentication and proper session management Possible -> Store hashed pass and check (Using MongoDB or SQLite) -> if time permits Fastapi Oauth or token based authentication and session management.
+- Store hashed pass and check (Using MongoDB or SQLite)
 - Read throught FastAPI docs and actually use pydantic models, OOPS Concepts.
 - Database to be included for filenames and their hash (so multiple same files can be stored) and for user authentication.(Currently a fake_db a dictionary is being used)
   

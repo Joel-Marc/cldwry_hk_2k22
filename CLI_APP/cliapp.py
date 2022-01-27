@@ -27,7 +27,7 @@ def down_file(usr, files, to: str = ""):
     for file in files:
         with open(to+file, 'wb') as f:
             c = pycurl.Curl()
-            c.setopt(c.URL, BASE_URL + usr + '/downfiles/' + file)
+            c.setopt(c.URL, BASE_URL + usr + '/downfiles/' + file.replace(' ', '%20'))
             c.setopt(c.WRITEDATA, f)
             c.perform()
             c.close()
@@ -57,7 +57,7 @@ def del_file(usr, files):
         b_obj = BytesIO()
         crl = pycurl.Curl()
 
-        crl.setopt(crl.URL, BASE_URL + usr + '/delefiles/'+file)
+        crl.setopt(crl.URL, BASE_URL + usr + '/delefiles/'+file.replace(' ', '%20'))
         crl.setopt(crl.WRITEDATA, b_obj)
         crl.perform()
         crl.close()
@@ -73,7 +73,7 @@ def del_file(usr, files):
 def upd_file(usr, files):
     crl = pycurl.Curl()
 
-    crl.setopt(crl.URL, BASE_URL + usr + '/updfiles/' + files[0])
+    crl.setopt(crl.URL, BASE_URL + usr + '/updfiles/' + files[0].replace(' ', '%20'))
     data = {'to': files[1]}
     print(data)
     pf = urlencode(data)
@@ -92,7 +92,7 @@ def shr_file(to, usr, files):
             b_obj = BytesIO()
             crl = pycurl.Curl()
 
-            crl.setopt(crl.URL, BASE_URL + usr + '/shrto/'+u+"/"+file)
+            crl.setopt(crl.URL, BASE_URL + usr + '/shrto/'+u+"/"+file.replace(' ', '%20'))
             crl.setopt(crl.WRITEDATA, b_obj)
             crl.perform()
             crl.close()
@@ -118,7 +118,8 @@ def curr_usr(usr):
     for k, v in fin.items():
         print(k, " : ")
         for it in v:
-            print(it)
+            if it is not usr:
+                print(it)
 
     print("\n")
     return [i for i in fin["CURRENT USERS"] if i != usr]
@@ -130,7 +131,7 @@ def logi(usrnm, passw):
 
     crl.setopt(crl.URL, BASE_URL + "login")
     data = {'username': usrnm, 'password': passw}
-    print(data)
+    # print(data)
     pf = urlencode(data)
     crl.setopt(crl.FOLLOWLOCATION, True)
 
@@ -140,7 +141,7 @@ def logi(usrnm, passw):
     crl.close()
     TOKEN = b_obj.getvalue().decode('utf8')
     if "nope" not in str(TOKEN):
-        print(TOKEN)
+        # print(TOKEN)
         print("\n")
         return False
     else:
@@ -216,8 +217,7 @@ if __name__ == '__main__':
             files = sys.argv[4:]
             fl = logi(usrnm, passw)
             if fl == False:
-
-                # print(usrnm, passw, opre, files)
+                print(usrnm, passw, opre, files)
                 if "l" in opre:
                     look_file(usrnm)
                 elif 'u' in opre:
