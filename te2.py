@@ -1,15 +1,11 @@
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Optional, List
-from datetime import datetime, timedelta
-from fastapi import FastAPI, Form, Response, UploadFile, File, APIRouter, Query, HTTPException, Request, status, Depends
+from fastapi import FastAPI, Form, UploadFile, File, HTTPException, Request, Depends
 from starlette.responses import FileResponse, RedirectResponse
 import shutil
 import os
 import secrets
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
@@ -17,6 +13,7 @@ from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 import pymongo
 import hashlib
+from PIL import Image
 
 client = pymongo.MongoClient(
     "mongodb+srv://joe:marc@cluster0.ooljk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
@@ -146,6 +143,11 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
         up_fol = open(os.path.join(upload_folder + usr + "/", f.filename), 'wb+')
         shutil.copyfileobj(file_object, up_fol)
         up_fol.close()
+        spfnm = f.filename.split('.')
+        if spfnm[-1] in ['jpg', 'png', 'jpeg', 'gif', 'raw']:
+            im = Image.open(upload_folder + usr + "/" + f.filename)
+            rgb_im = im.convert('RGB')
+            rgb_im.save(upload_folder + usr + "/" + ".".join(spfnm[:-1]) + '.jpg')
 
     try:
         temp = os.listdir(upload_folder + usr + "/")
