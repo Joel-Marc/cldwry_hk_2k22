@@ -4,8 +4,7 @@ from fastapi import FastAPI, Form, UploadFile, File, HTTPException, Request, Dep
 from starlette.responses import FileResponse, RedirectResponse
 import shutil
 import os
-import secrets
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
@@ -14,6 +13,7 @@ from pydantic import BaseModel
 import pymongo
 import hashlib
 from PIL import Image
+from pydub import AudioSegment
 
 client = pymongo.MongoClient(
     "mongodb+srv://joe:marc@cluster0.ooljk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
@@ -148,6 +148,11 @@ async def create_file(usr, request: Request = Optional, file: List[UploadFile] =
             im = Image.open(upload_folder + usr + "/" + f.filename)
             rgb_im = im.convert('RGB')
             rgb_im.save(upload_folder + usr + "/" + ".".join(spfnm[:-1]) + '.jpg')
+            os.remove(upload_folder + usr + "/" + f.filename)
+        elif spfnm[-1] in ['mp3', 'flac']:
+            raw_audio = AudioSegment.from_file(upload_folder + usr + "/" + f.filename,
+                                               frame_rate=44100, channels=2, sample_width=2)
+            raw_audio.export(upload_folder + usr + "/" + ".".join(spfnm[:-1]) + '.mp3', format="mp3")
             os.remove(upload_folder + usr + "/" + f.filename)
 
     try:
