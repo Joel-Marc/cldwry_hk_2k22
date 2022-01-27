@@ -15,6 +15,8 @@ import hashlib
 from PIL import Image
 from pydub import AudioSegment
 import sys
+import ffprobe
+
 sys.path.append('./ffmpeg')
 
 
