@@ -1,7 +1,7 @@
 # cldwry_hk_2k22
 
-The WEB-APP is [ACTIVE HERE](https://drive-cldwry-2k22.herokuapp.com/) DEMO VIDEO [Here](https://drive.google.com/file/d/1OOKMo7FlSpO9lMwOf2oxPPJsvIxuUDky/view?usp=sharing)
-The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/master/CLI_APP/README.md) DEMO VIDEO [Here](https://drive.google.com/file/d/1KHnlLSwQca4Bd9-L1y69MIh5MGG8yfnY/view?usp=sharing)
+- The WEB-APP is [ACTIVE HERE](https://drive-cldwry-2k22.herokuapp.com/) DEMO VIDEO [Here](https://drive.google.com/file/d/1OOKMo7FlSpO9lMwOf2oxPPJsvIxuUDky/view?usp=sharing)
+- The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/master/CLI_APP/README.md) DEMO VIDEO [Here](https://drive.google.com/file/d/1KHnlLSwQca4Bd9-L1y69MIh5MGG8yfnY/view?usp=sharing)
 
 - Libraries Used - FastAPI, pymongo, PIL, hashlib FOR the Backend, jinja2 -> Web-APP, pycurl -> CLI-APP
 
