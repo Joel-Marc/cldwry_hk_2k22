@@ -95,6 +95,36 @@ def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJ
     return response
 
 
+@app.post('/regist')
+def regist(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
+    coll = db['users']
+
+    # print(hashlib.sha256('win'.encode()).hexdigest())
+    # coll.insert_many(
+    #     [{'username': 'joe', 'phash': hashlib.sha256("win".encode()).hexdigest()},
+    #      {'username': 'may', 'phash': hashlib.sha256("spi".encode()).hexdigest()},
+    #      {'username': 'stan', 'phash': hashlib.sha256("sword".encode()).hexdigest()}])
+    # # coll.delete_many({})
+
+    fin = {}
+    for i in coll.find({'username': username}):
+        # temp = {}
+        fin[i['username']] = i['phash']
+        print(fin)
+
+    coll.insert_one(fin)
+
+    # Create the tokens and passing to set_access_cookies or set_refresh_cookies
+    access_token = Authorize.create_access_token(subject=username)
+    refresh_token = Authorize.create_refresh_token(subject=username)
+
+    # Set the JWT cookies in the response
+    Authorize.set_access_cookies(access_token)
+    Authorize.set_refresh_cookies(refresh_token)
+    response = RedirectResponse(url="/"+username+"/look/")
+    return response
+
+
 @app.post('/api/login')
 def login_api(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
     coll = db['users']
