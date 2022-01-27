@@ -90,7 +90,7 @@ def refresh(Authorize: AuthJWT = Depends()):
     return {"msg": "The token has been refresh"}
 
 
-@app.delete('/logout')
+@app.get('/logout')
 def logout(Authorize: AuthJWT = Depends()):
     """
     Because the JWT are stored in an httponly cookie now, we cannot
