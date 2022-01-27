@@ -98,6 +98,7 @@ def login(username: str = Form(...), password: str = Form(...), Authorize: AuthJ
 @app.post('/regist')
 def regist(username: str = Form(...), password: str = Form(...), Authorize: AuthJWT = Depends()):
     coll = db['users']
+    phash = hashlib.sha256(password.encode()).hexdigest()
 
     # print(hashlib.sha256('win'.encode()).hexdigest())
     # coll.insert_many(
@@ -106,11 +107,7 @@ def regist(username: str = Form(...), password: str = Form(...), Authorize: Auth
     #      {'username': 'stan', 'phash': hashlib.sha256("sword".encode()).hexdigest()}])
     # # coll.delete_many({})
 
-    fin = {}
-    for i in coll.find({'username': username}):
-        # temp = {}
-        fin[i['username']] = i['phash']
-        print(fin)
+    fin = {'username': username, 'phash': phash}
 
     coll.insert_one(fin)
 
