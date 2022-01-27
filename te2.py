@@ -100,7 +100,7 @@ def logout(Authorize: AuthJWT = Depends()):
     log the user out by simply deleting the cookies in the frontend.
     We need the backend to send us a response to delete the cookies.
     """
-    Authorize.jwt_required()
+    # Authorize.jwt_required()
 
     Authorize.unset_jwt_cookies()
     response = RedirectResponse(url="/")
