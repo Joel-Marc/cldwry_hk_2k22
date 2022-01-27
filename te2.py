@@ -166,6 +166,9 @@ async def create_file_api(usr, request: Request = Optional, file: List[UploadFil
 @app.get("/{usr}/look/")
 @app.post("/{usr}/look/")
 async def lookup_file(usr: str, request: Request, Authorize: AuthJWT = Depends()) -> dict:
+    Authorize.jwt_required()
+
+    current_user = Authorize.get_jwt_subject()
     try:
         temp = os.listdir(upload_folder + usr + "/")
     except:
