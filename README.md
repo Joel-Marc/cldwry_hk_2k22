@@ -5,6 +5,7 @@ The CLI-APP doc is [HERE](https://github.com/Joel-Marc/cldwry_hk_2k22/blob/maste
 
 ## Features of WEB-APP
 
+- Login over HTTP , hash of password is checked by retriving from MongoDB Cluster in MongoDB Atlas.
 - UPLOAD one or More File/s At a time
 - Download Files (shows preview of the file too)
 - Re-Name Files (can be exact name with file extention or with out one)
@@ -32,9 +33,6 @@ The blob storage application should have the following features:
 ## To Do
 
 - Write V2 Proper Readme - Explain Usage, Drawbacks and Limitations.
-- ~~Build a CLI based Application to access api~~
 - Try Compression for specific file formats flac to mp3, every image format to jpeg, maybe pdf to bit more higher compressed version of that.
-- Store hashed pass and check (Using MongoDB or SQLite)
-- Read throught FastAPI docs and actually use pydantic models, OOPS Concepts.
-- Database to be included for filenames and their hash (so multiple same files can be stored) and for user authentication.(Currently a fake_db a dictionary is being used)
+- Actually use pydantic models, OOPS Concepts, and Proper Naming Standards.
   
